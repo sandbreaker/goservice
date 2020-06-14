@@ -1,2 +1,4 @@
 # goservice
-Go api service
+Go api service stub
+
+# initialization
