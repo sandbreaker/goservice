@@ -1,13 +1,11 @@
-//  Copyright © 2020 Sang Chi. All rights reserved.
-
 package service
 
 import (
 	"net/http"
 
-	"github.com/sandbreaker/goservice/log"
-
 	"github.com/bitly/go-simplejson"
+
+	"github.com/sandbreaker/goservice/log"
 )
 
 func SetContentTypeJson(w http.ResponseWriter) {
@@ -22,12 +20,6 @@ func SetAccessControlOrigin(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 }
 
-func writeError(w http.ResponseWriter, httpCode int, err error) {
-	SetContentTypeJson(w)
-	w.WriteHeader(httpCode)
-	w.Write(errorResponse(httpCode, err))
-}
-
 func HandleOk(w http.ResponseWriter, payload []byte) {
 	SetContentTypeJson(w)
 	w.WriteHeader(http.StatusOK)
@@ -39,16 +31,16 @@ func HandleOk(w http.ResponseWriter, payload []byte) {
 	}
 }
 
-func InternalServerError(w http.ResponseWriter, err error) {
+func EroorInternalServer(w http.ResponseWriter, err error) {
 	writeError(w, http.StatusInternalServerError, err)
 }
 
-func UnauthorizedAccessError(w http.ResponseWriter, err error) {
-	writeError(w, http.StatusUnauthorized, err)
+func ErrorNotFound(w http.ResponseWriter, err error) {
+	writeError(w, http.StatusNotFound, err)
 }
 
-func NotFoundError(w http.ResponseWriter, err error) {
-	writeError(w, http.StatusNotFound, err)
+func ErrorUnauthorizedAccess(w http.ResponseWriter, err error) {
+	writeError(w, http.StatusUnauthorized, err)
 }
 
 func successResponse() []byte {
@@ -71,7 +63,7 @@ func errorResponse(code int, err error) []byte {
 
 	if err != nil {
 		json.Set("error", err.Error())
-		// TODO, arg, this needs to work like success response to be consistent, write twice for now
+		// write twice for now to work like success response for consistency
 		json.Set("result", err.Error())
 	}
 
@@ -82,4 +74,10 @@ func errorResponse(code int, err error) []byte {
 	}
 
 	return payload
+}
+
+func writeError(w http.ResponseWriter, httpCode int, err error) {
+	SetContentTypeJson(w)
+	w.WriteHeader(httpCode)
+	w.Write(errorResponse(httpCode, err))
 }

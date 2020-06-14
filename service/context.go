@@ -1,11 +1,9 @@
-//  Copyright © 2020 Sang Chi. All rights reserved.
-
 package service
 
 import (
 	"net/http"
 
-	"github.com/sandbreaker/goservice/modeldefault"
+	"github.com/sandbreaker/goservice/datamodel/mdefault"
 )
 
 type Context struct {
@@ -13,10 +11,10 @@ type Context struct {
 	errorTags map[string]string
 
 	// default
-	UserDefault *modeldefault.User
+	UserDefault *mdefault.User
 }
 
-func DefaultAppContext(api *ServiceAPI, r *http.Request, user *modeldefault.User) *Context {
+func DefaultAppContext(api *ServiceAPI, r *http.Request, user *mdefault.User) *Context {
 	ctx := &Context{
 		ServiceAPI:  api,
 		UserDefault: user,
