@@ -9,7 +9,7 @@ Go api service stub. Supports basic web/api service framework with ready made ut
 # Key features
 * **Multi app:** Multi app/context support
 * **Worker pool:** Basic building blocks for worker pool
-* **Service util:** logging, alerts, metrics, dynamic/static config
+* **Service util:** logging, alerts, metrics, dynamic/static config, pprof, etc
   
 
 # Progress
@@ -19,8 +19,8 @@ Go api service stub. Supports basic web/api service framework with ready made ut
 * [**done**] internal metric
 * [**done**] integration with sentry
 * [**done**] basic orm
-* [wip] datadog integration (free way)
-* [wip] dyanmic config
+* [**done**] datadog integration (free way)
 * [wip] worker pool
+* [wip] dyanmic config
 * [wip] docker
 * [wip] graphql

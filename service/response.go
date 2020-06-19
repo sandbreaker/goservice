@@ -31,7 +31,7 @@ func HandleOk(w http.ResponseWriter, payload []byte) {
 	}
 }
 
-func EroorInternalServer(w http.ResponseWriter, err error) {
+func ErrorInternalServer(w http.ResponseWriter, err error) {
 	writeError(w, http.StatusInternalServerError, err)
 }
 

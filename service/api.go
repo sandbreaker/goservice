@@ -86,7 +86,7 @@ func (api *ServiceAPI) middleware(h handleFunc, apiName string, prodType product
 
 				metric.StaticClient.Inc(fmt.Sprintf("%s.%s.%s", prodName, metric.ServiceAPIErr, apiName), 1, nil)
 				log.LogAndCaptureError(make(map[string]string), stacktrace.Propagate(err, "Panid detected: %s", debug.Stack()))
-				InternalServerError(w, err)
+				ErrorInternalServer(w, err)
 				return
 			}
 		}()
