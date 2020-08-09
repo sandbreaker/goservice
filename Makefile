@@ -2,7 +2,7 @@
 
 APP_NAME=service-api
 BIN_NAME=service-api
-APP_REPO_URL="github.com/sandbreaker/goservice"
+APP_REPO_URL=github.com/sandbreaker/goservice
 
 OK_COLOR=\033[32;01m
 NO_COLOR=\033[0m
@@ -68,14 +68,14 @@ generate:
 	@echo "$(OK_COLOR)==> Generating files via go generate...$(NO_COLOR)"
 	@$(GO) generate $(GOFLAGS) $(PKGS)
 
-# build-static: test
-# 	@echo "$(OK_COLOR)==> Building binary ($(GOOS)/$(GOARCH))...$(NO_COLOR)"
-# 	@echo @$(ENVFLAGS) $(GO) build -a -installsuffix cgo -tags $(TAGS)  $(GOFLAGS) $(GO_LINKER_FLAGS) -o bin/$(GOOS)_$(GOARCH)/$(BIN_NAME) cmd/api/main.go
-# 	@$(ENVFLAGS) $(GO) build -a -installsuffix cgo -tags $(TAGS) $(GOFLAGS) $(GO_LINKER_FLAGS) -o bin/$(GOOS)_$(GOARCH)/$(BIN_NAME) cmd/api/main.go
+build-static: test
+	@echo "$(OK_COLOR)==> Building binary ($(GOOS)/$(GOARCH))...$(NO_COLOR)"
+	@echo @$(ENVFLAGS) $(GO) build -a -installsuffix cgo -tags $(TAGS)  $(GOFLAGS) $(GO_LINKER_FLAGS) -o bin/$(GOOS)_$(GOARCH)/$(BIN_NAME) cmd/service-api/main.go
+	@$(ENVFLAGS) $(GO) build -a -installsuffix cgo -tags $(TAGS) $(GOFLAGS) $(GO_LINKER_FLAGS) -o bin/$(GOOS)_$(GOARCH)/$(BIN_NAME) cmd/service-api/main.go
 
-# install-static: build
-# 	@echo "$(OK_COLOR)==> Installing packages into GOPATH...$(NO_COLOR)"
-# 	@$(GO) install $(GOFLAGS) $(PKGS)
+install-static: build
+	@echo "$(OK_COLOR)==> Installing packages into GOPATH...$(NO_COLOR)"
+	@$(GO) install $(GOFLAGS) $(PKGS)
 
 install:
 	@$(GO) install ./...
@@ -85,6 +85,21 @@ run-dev: install
 
 format:
 	@$(GO) fmt ./... && $(GO) vet ./...
+
+build-docker-image: build-static
+	@echo "$(OK_COLOR)==> Creating docker image...$(NO_COLOR)"
+	@$(DOCKER) build -t $(APP_NAME) .
+
+cleanup-docker-image:
+	@$(DOCKER) rmi $(shell docker images -f "dangling=true" -q)
+
+list-docker-image:
+	@$(DOCKER) images
+
+run-docker-image-dev:
+	@echo "$(OK_COLOR)==> Running docker image $(APP_NAME)...$(NO_COLOR)"
+	@echo "$(DOCKER) run -i -t --rm --publish 8081:8088 --env GOSERVICE_ENV=dev --name $(APP_NAME) $(APP_NAME)"
+	$(DOCKER) run -i -t --rm --publish 8081:8088 --env GOSERVICE_ENV=dev --name $(APP_NAME) $(APP_NAME)
 
 
 ##########

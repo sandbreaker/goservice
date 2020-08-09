@@ -20,7 +20,9 @@ Go api service stub. Supports basic web/api service framework with ready made ut
 * [**done**] integration with sentry
 * [**done**] basic orm
 * [**done**] datadog integration (free way)
+* [**done**] docker (with static binary)
+* [wip] ecs (aws)
+* [wip] kubernetes (aws)
 * [wip] worker pool
 * [wip] dyanmic config
-* [wip] docker
 * [wip] graphql
